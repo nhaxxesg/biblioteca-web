@@ -20,5 +20,9 @@ class Librarian extends Model
         'estado'
     ];
     
+    public function loans()
+    {
+        return $this->hasMany(Loan::class);
+    }
 }
 
