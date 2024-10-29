@@ -20,4 +20,10 @@ class Book extends Model
     {
         return $this->belongsToMany(Autor::class);
     }
+
+    public function loans()
+    {
+        return $this->hasMany(Loan::class);
+    }
 }
+

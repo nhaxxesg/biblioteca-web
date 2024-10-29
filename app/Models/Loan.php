@@ -13,4 +13,9 @@ class Loan extends Model
     protected $fillable = [
         'fPrestamo'
     ];
+
+    public function book()
+    {
+        return $this->hasOne(Book::class);
+    }
 }
