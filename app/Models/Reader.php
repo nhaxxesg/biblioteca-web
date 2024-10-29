@@ -19,6 +19,5 @@ class Reader extends Model
         'semestre',
         'idTipo',
         'idArea'
-
     ];
 }
