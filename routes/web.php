@@ -25,3 +25,8 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+
+Route::get('/catalogo', function () {
+    return inertia('Catalogo'); // Asegúrate de que el componente se renderice con Inertia
+});
