@@ -16,6 +16,7 @@ class Area extends Model
     ];
 
     public function readers()
+    
     {
         return $this->hasMany(Reader::class);
     }
