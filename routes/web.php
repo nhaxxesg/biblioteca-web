@@ -32,9 +32,6 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-/*Route::get('/catalogos', function () {
-    return inertia('Catalogo');
-});*/
 Route::get('/catalogo', function () {
-    return inertia('CatalogPage'); 
-});
+    return Inertia::render('CatalagoMenu/CatalogPage');
+})->name('catalogo');
