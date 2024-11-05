@@ -14,8 +14,13 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+Route::get('/Devolucion', function () {
+    return Inertia::render('MenuDevoluciones/index');
+})->name('Devolucion');
 
-
+Route::get('/sanciones', function () {
+    return Inertia::render('Sanciones/index');
+})->name('sanciones');
 
 Route::get('/mainmenu', function () {
     return Inertia::render('MainMenu/index');
