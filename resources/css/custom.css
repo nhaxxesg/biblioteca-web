@@ -1,0 +1,69 @@
+.modal-content {
+    background: white;
+    padding: 20px;
+    width: 90%;
+    max-width: 1000px;
+    border-radius: 12px; /* Incrementa el radio para bordes más suaves */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Sombra más suave y grande */
+    overflow-y: auto;
+    max-height: 100vh;
+}
+
+.modal-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6); /* Fondo oscuro con opacidad */
+    z-index: 50;
+}
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-container th, .table-container td {
+    padding: 10px; /* Espaciado interno */
+    text-align: left;
+    border-bottom: 10px solid #ddd; /* Bordes entre filas */
+}
+
+.table-container th {
+    background-color: #007BFF; /* Color de fondo de encabezado */
+    color: white;
+    font-weight: bold;
+}
+
+.table-container tr:nth-child(even) {
+    background-color: #f2f2f2; /* Fondo para filas pares */
+}
+
+.table-container tr:hover {
+    background-color: #e0e0e0; /* Efecto hover */
+}
+.button-close {
+    background-color: #ff4d4d; /* Rojo suave */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.button-close:hover {
+    background-color: #ff3333;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
