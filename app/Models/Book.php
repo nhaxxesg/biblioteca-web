@@ -15,4 +15,15 @@ class Book extends Model
         'estado',
         'disponibilidad'
     ];
+
+    public function autors()
+    {
+        return $this->belongsToMany(Autor::class);
+    }
+
+    public function loans()
+    {
+        return $this->hasMany(Loan::class);
+    }
 }
+

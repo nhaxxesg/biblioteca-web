@@ -14,4 +14,10 @@ class Area extends Model
         'nombreArea',
         'abreviatura'
     ];
+
+    public function readers()
+    
+    {
+        return $this->hasMany(Reader::class);
+    }
 }
