@@ -31,7 +31,6 @@ function Sanciones() {
                         <table className="w-full bg-white border border-gray-200 rounded-lg shadow-md">
                             <thead className="bg-blue-500 text-white">
                                 <tr>
-                                    <th className="py-2 px-4 text-left">ID Ejemplar</th>
                                     <th className="py-2 px-4 text-left">Título</th>
                                     <th className="py-2 px-4 text-left">Nombre Lector</th>
                                     <th className="py-2 px-4 text-left">DNI</th>
@@ -47,7 +46,6 @@ function Sanciones() {
                                             sancionSeleccionada === sancion.idEjemplar ? "bg-gray-200" : ""
                                         }`}
                                     >
-                                        <td className="py-2 px-4">{sancion.idEjemplar}</td>
                                         <td className="py-2 px-4">{sancion.titulo}</td>
                                         <td className="py-2 px-4">{sancion.nombreLector}</td>
                                         <td className="py-2 px-4">{sancion.dni}</td>
