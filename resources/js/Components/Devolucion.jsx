@@ -43,8 +43,7 @@ function Devoluciones() {
     return (
         <AuthenticatedLayout
             header={<h1 className="text-3xl font-bold text-gray-800">Devoluciones</h1>}
-        >
-            <div className="p-6">
+            children={  <div className="p-6">
                 <h2 className="text-xl font-semibold mb-4">Lista de Devoluciones</h2>
                 <table className="w-full bg-white border border-gray-200 rounded-lg shadow-md">
                     <thead className="bg-blue-500 text-white">
@@ -76,7 +75,10 @@ function Devoluciones() {
                         ))}
                     </tbody>
                 </table>
-            </div>
+            </div>}
+                
+            >
+          
         </AuthenticatedLayout>
     );
 }
