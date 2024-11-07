@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Api\AutorController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Models\LibroAutor;
@@ -11,17 +12,22 @@ class LibroAutorController extends Controller
 {
     protected $bookController;
     protected $categoryController;
+    protected $autorController;
 
-    public function __construct(BookController $bookController, CategoryController $categoryController)
+    public function __construct(BookController $bookController,
+                                CategoryController $categoryController,
+                                AutorController $autorController)
     {
         $this->bookController = $bookController;
         $this->categoryController = $categoryController;
+        $this->autorController = $autorController;
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        // CATALOGO
         $all = LibroAutor::paginate(10);
         foreach ($all as $libroautor) {
             $response_json = $this->bookController->show($libroautor->idLibro);
@@ -51,12 +57,18 @@ class LibroAutorController extends Controller
      */
     public function show(string $id_libro)
     {
+
         $libroautor = LibroAutor::where('idLibro', $id_libro)->first();
-        $response_json = $this->categoryController->show($libroautor->idCategoria);
-        $category = $response_json->getData();
+        # necesito un autor controller para traer el autor por el id 
+        $response_autor_json = $this->autorController->show($libroautor->idAutor);
+        $response_category_json = $this->categoryController->show($libroautor->idCategoria);
+        $category = $response_category_json->getData();
+        $autor = $response_autor_json->getData();
         $data = [
             'libro' => $libroautor->titulo,
-            'catogory' => $category->nombreC
+            'category' => $category->nombreC,
+            'autor' => $autor->nombreAU,
+
         ];
         return response()->json($data);
     }

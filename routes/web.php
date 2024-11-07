@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\LoanController;
 use App\Http\Controllers\LibroAutorController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -37,5 +38,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::apiResource('libroautor', LibroAutorController::class);
+Route::apiResource('loan', LoanController::class);
 
 require __DIR__.'/auth.php';

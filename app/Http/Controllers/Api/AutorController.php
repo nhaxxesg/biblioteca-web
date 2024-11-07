@@ -3,18 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Autor;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class AutorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $all = Category::all();
-        return response()->json($all);
+        //
     }
 
     /**
@@ -30,8 +29,8 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        $category = Category::find($id);
-        return response()->json($category);
+        $autor = Autor::find($id);
+        return response()->json($autor);
     }
 
     /**

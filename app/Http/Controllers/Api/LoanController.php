@@ -19,13 +19,9 @@ class LoanController extends Controller
         $this->libroAutorController = $libroAutorController;
     }
 
-    public function index(int $user_id)
+    public function index()
     {
-        /*$all = Loan::where('idLector', $user_id)->paginate(10);
-        foreach($all as $prestamo){
-            
-            $data = []
-        }*/
+
     }
 
     /**
@@ -39,10 +35,27 @@ class LoanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    # solo diosito sabee que como funciona este codigo
+    public function show(int $user_id)
     {
-        $loan = Loan::find($id)->book;
-        return response()->json($loan);
+        $all = Loan::where('idLector', $user_id)->paginate(10);
+        $response_data = [];
+        foreach($all as $prestamo){
+            $response_libro_autor_json = $this->libroAutorController->show($prestamo->idLibro);
+            $json_content = $response_libro_autor_json->getData();
+            $data = json_decode(json_encode($json_content), true);
+            $response_book_json = $this->bookController->show($prestamo->idLibro);
+            $book = $response_book_json->getData();
+            $data =[
+                'libro' => $data['libro'],
+                'category' => $data['category'], 
+                'autor' => $data['autor'],
+                'estado' => $prestamo->estado,
+                'disponibilidad' => $book->disponibilidad,
+            ];
+            array_push($response_data, $data);
+        };
+        return response()->json($response_data);
     }
 
     /**
