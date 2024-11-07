@@ -2,16 +2,20 @@ import React, { useState } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 function Sanciones() {
-    const [sanciones] = useState([
-        { ejemplar: "12345", titulo: "El principito", nombreLector: "Juan Pérez", dni: "12345678", fecha: "2024-11-05", detalles: "Retraso en la entrega", monto: "5.00" },
-        { ejemplar: "67890", titulo: "Cien años de soledad", nombreLector: "Ana Gómez", dni: "87654321", fecha: "2024-11-01", detalles: "Libro dañado", monto: "10.00" },
-        { ejemplar: "54321", titulo: "Don Quijote", nombreLector: "Luis Martínez", dni: "12349876", fecha: "2024-10-30", detalles: "Pérdida de ejemplar", monto: "15.00" },
-        { ejemplar: "98765", titulo: "El alquimista", nombreLector: "Marta López", dni: "78945612", fecha: "2024-11-03", detalles: "Retraso en la entrega", monto: "7.50" },
-        // Puedes agregar más datos aquí
-    ]);
+    const [monto, setMonto] = useState("");
+    const [descripcion, setDescripcion] = useState("");
+    const [sancionSeleccionada, setSancionSeleccionada] = useState(null);
 
-    const seleccionarSancion = (titulo) => {
-        alert(`Sanción seleccionada: ${titulo}`);
+    const sanciones = [
+        { idEjemplar: "123", titulo: "El principito", nombreLector: "Juan Pérez", dni: "12345678", fecha: "2023-11-05", monto: "20.00", descripcion: "Libro devuelto en mal estado." },
+        { idEjemplar: "124", titulo: "Cien años de soledad", nombreLector: "Maria García", dni: "87654321", fecha: "2023-10-15", monto: "15.00", descripcion: "Retraso en la devolución." },
+        // Agrega más datos aquí si lo deseas
+    ];
+
+    const seleccionarSancion = (sancion) => {
+        setMonto(sancion.monto);
+        setDescripcion(sancion.descripcion);
+        setSancionSeleccionada(sancion.idEjemplar); // Guarda el ID de la sanción seleccionada
     };
 
     return (
@@ -23,56 +27,65 @@ function Sanciones() {
             }
             children={
                 <div className="p-6">
-                    <div className="overflow-x-auto mb-6">
+                    <div className="overflow-x-auto mb-4">
                         <table className="w-full bg-white border border-gray-200 rounded-lg shadow-md">
                             <thead className="bg-blue-500 text-white">
                                 <tr>
-                                    <th className="py-2 px-4 text-left">ID Ejemplar</th>
                                     <th className="py-2 px-4 text-left">Título</th>
                                     <th className="py-2 px-4 text-left">Nombre Lector</th>
                                     <th className="py-2 px-4 text-left">DNI</th>
                                     <th className="py-2 px-4 text-left">Fecha</th>
+                                    <th className="py-2 px-4 text-center">Acción</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {sanciones.map((sancion, index) => (
-                                    <tr key={index} className="border-b">
-                                        <td className="py-2 px-4">{sancion.ejemplar}</td>
+                                    <tr
+                                        key={index}
+                                        className={`border-b ${
+                                            sancionSeleccionada === sancion.idEjemplar ? "bg-gray-200" : ""
+                                        }`}
+                                    >
                                         <td className="py-2 px-4">{sancion.titulo}</td>
                                         <td className="py-2 px-4">{sancion.nombreLector}</td>
                                         <td className="py-2 px-4">{sancion.dni}</td>
                                         <td className="py-2 px-4">{sancion.fecha}</td>
+                                        <td className="py-2 px-4 text-center">
+                                            <button
+                                                onClick={() => seleccionarSancion(sancion)}
+                                                className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                                            >
+                                                Seleccionar
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
 
-                    {/* Campo de detalles de la sanción */}
                     <div className="mb-4">
                         <label className="block font-semibold text-gray-700 mb-1">Detalles de la sanción:</label>
                         <textarea
-                            className="w-full p-3 border border-gray-300 rounded-md h-24"
-                            placeholder="Ingrese los detalles de la sanción aquí..."
-                        ></textarea>
-                    </div>
-
-                    {/* Campo de monto */}
-                    <div className="mb-4 w-1/4">
-                        <label className="block font-semibold text-gray-700 mb-1">Monto:</label>
-                        <input
-                            type="text"
-                            className="w-full p-2 border border-gray-300 rounded-md"
-                            placeholder="0.00"
+                            value={descripcion}
+                            readOnly
+                            className="w-full p-2 border border-gray-300 rounded-md h-24"
                         />
                     </div>
 
-                    
+                    <div className="mb-4">
+                        <label className="block font-semibold text-gray-700 mb-1">Monto:</label>
+                        <input
+                            type="text"
+                            value={monto}
+                            readOnly
+                            className="w-full p-2 border border-gray-300 rounded-md"
+                        />
+                    </div>
                 </div>
             }
-        >
-        </AuthenticatedLayout>
+        />
     );
-};
+}
 
 export default Sanciones;
