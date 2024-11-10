@@ -41,3 +41,8 @@ Route::apiResource('libroautor', LibroAutorController::class);
 Route::apiResource('loan', LoanController::class);
 
 require __DIR__.'/auth.php';
+
+
+Route::get('/catalogo', function () {
+    return inertia('Catalogo'); // Asegúrate de que el componente se renderice con Inertia
+});
