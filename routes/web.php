@@ -31,6 +31,11 @@ Route::get('/menuprestamos', function () {
     return Inertia::render('MenuPrestamos/index');
 })->name('menuprestamos');
 
+Route::get('/catalogo', function () {
+    return Inertia::render('CatalagoMenu/CatalogPage');
+})->name('catalogo');
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
