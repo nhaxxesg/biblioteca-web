@@ -6,23 +6,50 @@ function Asidebar() {
             <h2 class="text-2xl font-bold mb-6">Biblioteca</h2>
             <nav class="space-y-4">
 
-                    <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <NavLink
-                            href={route('mainmenu')}
-                            active={route().current('mainmenu')}
-                        >
-                            <p className='text-white transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none'>Menu</p>
-                        </NavLink>
-                    </div>
+                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <NavLink
+                        href={route('mainmenu')}
+                        active={route().current('mainmenu')}
+                    >
+                        <p className='text-white transition duration-150 ease-in-out hover:text-[#00beac] focus:outline-none'>Menu</p>
+                    </NavLink>
+                </div>
 
-                    <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <NavLink
-                            href={route('menuprestamos')}
-                            active={route().current('menuprestamos')}
-                        >
-                            <p className='text-white transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none'>Prestamos</p>
-                        </NavLink>
-                    </div>
+                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <NavLink
+                        href={route('menuprestamos')}
+                        active={route().current('menuprestamos')}
+                    >
+                        <p className='text-white transition duration-150 ease-in-out hover:text-[#00beac] focus:outline-none'>Prestamos</p>
+                    </NavLink>
+                </div>
+
+                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <NavLink
+                        href={route('devolucion')}
+                        active={route().current('devolucion')}
+                    >
+                        <p className='text-white transition duration-150 ease-in-out hover:text-[#00beac] focus:outline-none'>Devoluciones</p>
+                    </NavLink>
+                </div>
+
+                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <NavLink
+                        href={route('sanciones')}
+                        active={route().current('sanciones')}
+                    >
+                        <p className='text-white transition duration-150 ease-in-out hover:text-[#00beac] focus:outline-none'>Sanciones</p>
+                    </NavLink>
+                </div>
+
+                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <NavLink
+                        href={route('catalogo')}
+                        active={route().current('catalogo')}
+                    >
+                        <p className='text-white transition duration-150 ease-in-out hover:text-[#00beac] focus:outline-none'>Catalogo</p>
+                    </NavLink>
+                </div>
             </nav>
         </aside>
     );

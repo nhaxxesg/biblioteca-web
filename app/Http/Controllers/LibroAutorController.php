@@ -31,10 +31,16 @@ class LibroAutorController extends Controller
         $all = LibroAutor::paginate(10);
         foreach ($all as $libroautor) {
             $response_json = $this->bookController->show($libroautor->idLibro);
+            $response_autor_json = $this->autorController->show($libroautor->idAutor);
+            $response_category_json = $this->categoryController->show($libroautor->idCategoria);
             $book = $response_json->getData();
+            $autor = $response_autor_json->getData();
+            $category = $response_category_json->getData();
             $data = [
-                'nombre libro' => $libroautor->titulo,
-                'disponibilidad' => $book->disponibilidad
+                'nombrelibro' => $libroautor->titulo,
+                'disponibilidad' => $book->disponibilidad,
+                'nombreautor' => $autor->nombreAU,
+                'categoria' => $category->nombreC
             ];  
 
             $current_data[] = $data;

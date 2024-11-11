@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useFetch } from "./useFetch";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import Loading from "./Loading";
 
 function Prestamos() {
     const [titulo, setTitulo] = useState("");
@@ -10,6 +12,10 @@ function Prestamos() {
         { titulo: "El principitote", autor: "royer", categoria: "Ciencia" },
     ]);
 
+    const { data, loading, error } = useFetch(
+        "http://127.0.0.1:8000/loan/1"
+    );
+    
     const filtrarLibros = () => {
         return libros.filter(libro =>
             libro.titulo.toLowerCase().includes(titulo.toLowerCase()) &&
@@ -54,8 +60,8 @@ function Prestamos() {
                             <p>prueba</p>
                         </div>
                         <div className="row-start-2 col-start-2">
-                        <label className="block font-semibold text-gray-700 mb-1">Tipo Usuario:</label>
-                        <p>prueba</p>
+                            <label className="block font-semibold text-gray-700 mb-1">Tipo Usuario:</label>
+                            <p>prueba</p>
                         </div>
                         <div className="col-start-3 row-start-1">
 
@@ -119,27 +125,33 @@ function Prestamos() {
                                     <th className="py-2 px-4 text-left">Autor</th>
                                     <th className="py-2 px-4 text-left">Categoría</th>
                                     <th className="py-2 px-4 text-center">Seleccionar</th>
-                                    <th className="py-2 px-4 text-center">Disponibilidad</th>                                    
+                                    <th className="py-2 px-4 text-center">Estado</th>
+                                    <th className="py-2 px-4 text-center">Disponibilidad</th>
                                 </tr>
                             </thead>
+                            {error && <li>Error: {error}</li>}
                             <tbody>
-                                {filtrarLibros().map((libro, index) => (
-                                    <tr key={index} className="border-b">
-                                        <td className="py-2 px-4">{libro.titulo}</td>
-                                        <td className="py-2 px-4">{libro.autor}</td>
-                                        <td className="py-2 px-4">{libro.categoria}</td>
+                                {data?.map((Loan) => (
+                                    <tr className="border-b">
+                                        <td className="py-2 px-4">{Loan.libro}</td>
+                                        <td className="py-2 px-4">{Loan.autor}</td>
+                                        <td className="py-2 px-4">{Loan.category}</td>
                                         <td className="py-2 px-4 text-center">
                                             <button
-                                                onClick={() => seleccionarLibro(libro.titulo)}
+                                                onClick={() => seleccionarLibro(Loan.titulo)}
                                                 className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
                                             >
                                                 Seleccionar
                                             </button>
                                         </td>
+                                        <td className="py-2 px-4">{Loan.estado}</td>
+                                        <td className="py-2 px-4">{Loan.disponibilidad}</td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
+                        {loading && <Loading></Loading>}
+
                     </div>
 
                 </div>
@@ -151,3 +163,5 @@ function Prestamos() {
 };
 
 export default Prestamos;
+
+

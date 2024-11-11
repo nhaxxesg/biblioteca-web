@@ -17,7 +17,7 @@ Route::get('/', function () {
 });
 Route::get('/Devolucion', function () {
     return Inertia::render('MenuDevoluciones/index');
-})->name('Devolucion');
+})->name('devolucion');
 
 Route::get('/sanciones', function () {
     return Inertia::render('Sanciones/index');
