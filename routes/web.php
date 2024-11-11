@@ -44,5 +44,6 @@ Route::middleware('auth')->group(function () {
 
 Route::apiResource('libroautor', LibroAutorController::class);
 Route::apiResource('loan', LoanController::class);
+Route::get('/catalogo/{idCategoria}', [LibroAutorController::class, 'index']);
 
 require __DIR__.'/auth.php';
