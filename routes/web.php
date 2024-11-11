@@ -1,8 +1,13 @@
 <?php
 
+use App\Http\Controllers\Api\AutorController;
+use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\LoanController;
+use App\Http\Controllers\Api\SanctionController;
 use App\Http\Controllers\LibroAutorController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Book;
+use App\Models\LibroAutor;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -43,6 +48,10 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::apiResource('libroautor', LibroAutorController::class);
+Route::apiResource('autor', AutorController::class);
 Route::apiResource('loan', LoanController::class);
+Route::apiResource('sanction', SanctionController::class);
+Route::apiResource('libro', BookController::class);
+Route::get('libroautor/loans', [LibroAutorController::class, 'index_loans']);
 
 require __DIR__.'/auth.php';
