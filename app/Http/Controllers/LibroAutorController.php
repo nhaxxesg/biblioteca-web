@@ -29,21 +29,47 @@ class LibroAutorController extends Controller
     {
         // CATALOGO
         $all = LibroAutor::paginate(10);
+        $current_data = [];
         foreach ($all as $libroautor) {
             $response_json = $this->bookController->show($libroautor->idLibro);
+            $response_libro_autor_json = $this->show($libroautor->idLibro);
+            $json_content = $response_libro_autor_json->getData();
+            $data = json_decode(json_encode($json_content), true);
             $book = $response_json->getData();
             $data = [
                 'nombre libro' => $libroautor->titulo,
-                'disponibilidad' => $book->disponibilidad
+                'category' => $data['category'], 
+                'autor' => $data['autor'],
+                'disponibilidad' => $book->disponibilidad,
             ];  
 
-            $current_data[] = $data;
+            array_push($current_data, $data);
             
         }
 
         return response()->json($current_data);
     }
 
+    public function index_loans(){
+        $all = LibroAutor::paginate(10);
+        $response_data = [];
+        foreach($all as $libro_autor){
+            $response_libro_autor_json = $this->show($libro_autor->idLibro);
+            $json_content = $response_libro_autor_json->getData();
+            $data = json_decode(json_encode($json_content), true);
+            $response_book_json = $this->bookController->show($libro_autor->idLibro);
+            $book = $response_book_json->getData();
+            $data =[
+                'libro' => $data['libro'],
+                'category' => $data['category'], 
+                'autor' => $data['autor'],
+                'estado' => $libro_autor->estado,
+                'disponibilidad' => $book->disponibilidad,
+            ];
+            array_push($response_data, $libro_autor);
+        };
+        return response()->json($response_data);
+    }
     /**
      * Store a newly created resource in storage.
      */
