@@ -5,10 +5,22 @@ import Loading from "./Loading";
 
 function Catalog() {
 
+    const [url, setUrl] = useState("http://127.0.0.1:8000/categoria");
 
-    const { data, loading, error } = useFetch(
-        "http://127.0.0.1:8000/libroautor"
+    const { data: libro, loading: loadinglibro, error: errorlibro } = useFetch(
+        url, true
     );
+
+    const { data: categoria } = useFetch(
+        "http://127.0.0.1:8000/category"
+    );
+
+
+
+    const handleCategoryChange = (event) => {
+        const selectedId = event.target.value;
+        setUrl(`http://127.0.0.1:8000/categoria/${selectedId}`);
+    };
 
     return (
         <AuthenticatedLayout
@@ -30,13 +42,13 @@ function Catalog() {
                                 Selecciona un Área
                             </label>
                             <select
+                                onChange={handleCategoryChange}
 
                                 className="w-full p-3 border border-[#d6c8b2] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7A9B7D]"
                             >
-                                <option value="Todos">Todas las Áreas</option>
-                                {data?.map((Category) => (
+                                {categoria?.map((Category) => (
 
-                                    <option>{Category.categoria}</option>
+                                    <option value={Category.idCategoria}>{Category.nombreC}</option>
 
                                 ))}
                             </select>
@@ -58,47 +70,43 @@ function Catalog() {
                             />
                         </div>
 
-                        {/* Filtro de Estado */}
-                        <div className="flex gap-2 mb-4 justify-center">
-                            <button
+                        {/* Tabla de Resultados */}
+                        <div>
+                            {loadinglibro ? (
+                                <Loading /> 
+                            ) : (
+                                <table className="min-w-full bg-white rounded-lg shadow-lg border border-[#e0e0e0]">
+                                    <thead className="bg-[#009789]">
+                                        <tr>
+                                            <th className="py-3 px-5 text-left text-[#4A3B25] font-semibold">
+                                                Título
+                                            </th>
+                                            <th className="py-3 px-5 text-left text-[#4A3B25] font-semibold">
+                                                Autor
+                                            </th>
+                                            <th className="py-3 px-5 text-left text-[#4A3B25] font-semibold">
+                                                Estado
+                                            </th>
+                                            <th className="py-3 px-5 text-left text-[#4A3B25] font-semibold">
+                                                Categoria
+                                            </th>
+                                        </tr>
+                                    </thead>
 
-                                className={'px-4 py-2 border-b-2 transition-all duration-200'}
-                            >
-                            </button>
+                                    <tbody>
+                                        {libro?.map((Book) => (
+                                            <tr key={Book.idLibro}>
+                                                <td>{Book.nombrelibro}</td>
+                                                <td>{Book.nombreautor}</td>
+                                                <td>{Book.disponibilidad}</td>
+                                                <td>{Book.categoria}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            )}
                         </div>
 
-                        {/* Tabla de Resultados */}
-                        <table className="min-w-full bg-white rounded-lg shadow-lg border border-[#e0e0e0]">
-                            {error && <li>Error: {error}</li>}
-                            <thead className="bg-[#009789]">
-                                <tr>
-                                    <th className="py-3 px-5 text-left text-[#4A3B25] font-semibold">
-                                        Título
-                                    </th>
-                                    <th className="py-3 px-5 text-left text-[#4A3B25] font-semibold">
-                                        Autor
-                                    </th>
-                                    <th className="py-3 px-5 text-left text-[#4A3B25] font-semibold">
-                                        Estado
-                                    </th>
-                                    <th className="py-3 px-5 text-left text-[#4A3B25] font-semibold">
-                                        Categoria
-                                    </th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {data?.map((Book) => (
-                                    <tr>
-                                        <td>{Book.nombrelibro}</td>
-                                        <td>{Book.nombreautor}</td>
-                                        <td>{Book.disponibilidad}</td>
-                                        <td>{Book.categoria}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        {loading && <Loading></Loading>}
                     </div>
                 </div>
             }

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\AreaController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\LoanController;
 use App\Http\Controllers\LibroAutorController;
 use App\Http\Controllers\ProfileController;
@@ -44,6 +46,7 @@ Route::middleware('auth')->group(function () {
 
 Route::apiResource('libroautor', LibroAutorController::class);
 Route::apiResource('loan', LoanController::class);
-Route::get('/catalogo/{idCategoria}', [LibroAutorController::class, 'index']);
+Route::get('/categoria/{idCategoria?}', [LibroAutorController::class, 'index']);
+Route::apiResource('category', CategoryController::class);
 
 require __DIR__.'/auth.php';

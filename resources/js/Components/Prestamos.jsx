@@ -67,14 +67,6 @@ function Prestamos() {
 
                             <div className="mb-4">
                                 <label className="block font-semibold text-gray-700 mb-1">Buscar por Título:</label>
-                                {/* <select
-                                value={titulo}
-                                onChange={(e) => setTitulo(e.target.value)}
-                                className="w-full p-2 border border-gray-300 rounded-md">
-                                <option value="">El principito</option>
-                                <option value="">Breve historia del tiempo</option>
-
-                            </select> */}
                                 <input
                                     type="text"
                                     value={titulo}
@@ -86,11 +78,6 @@ function Prestamos() {
                         <div className="col-start-3  row-start-2">
                             <div className="mb-4">
                                 <label className="block font-semibold text-gray-700 mb-1">Buscar por Autor:</label>
-                                {/* <select name="" id="" className="w-full  border border-gray-300 rounded-md">
-                                <option value="">1</option>
-                                <option value="">2</option>
-
-                            </select> */}
                                 <input
                                     type="text"
                                     value={autor}
@@ -118,6 +105,11 @@ function Prestamos() {
                     </div>
 
                     <div className="overflow-x-auto">
+                        
+                            {loading ? (
+                                <Loading />
+                            ) : (
+                        
                         <table className="w-full bg-white border border-gray-200 rounded-lg shadow-md">
                             <thead className="bg-blue-500 text-white">
                                 <tr>
@@ -150,8 +142,7 @@ function Prestamos() {
                                 ))}
                             </tbody>
                         </table>
-                        {loading && <Loading></Loading>}
-
+                    )}
                     </div>
 
                 </div>
