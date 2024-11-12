@@ -25,10 +25,11 @@ class LibroAutorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(string $idCategoria)
+    public function index(string $idCategoria = null)
     {
         // CATALOGO
-        $all = LibroAutor::where('idCategoria', $idCategoria)->paginate(10);
+        $idCategoria = ($idCategoria == null)? $idCategoria = 1 : $idCategoria = $idCategoria;
+        $all = LibroAutor::where('idCategoria', $idCategoria)->paginate(20);
         foreach ($all as $libroautor) {
             $response_json = $this->bookController->show($libroautor->idLibro);
             $response_autor_json = $this->autorController->show($libroautor->idAutor);
@@ -37,6 +38,7 @@ class LibroAutorController extends Controller
             $autor = $response_autor_json->getData();
             $category = $response_category_json->getData();
             $data = [
+                'idlibro' => $book->idLibro,
                 'nombrelibro' => $libroautor->titulo,
                 'disponibilidad' => $book->disponibilidad,
                 'nombreautor' => $autor->nombreAU,
