@@ -33,7 +33,7 @@ class Reader extends Model
 
     public function Sanctions()
     {
-        return $this->hasMany(Saction::class);
+        return $this->hasMany(Sanction::class);
     }
 
     public function Type()

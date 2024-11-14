@@ -12,10 +12,24 @@ function Prestamos() {
         { titulo: "El principitote", autor: "royer", categoria: "Ciencia" },
     ]);
 
-    const { data, loading, error } = useFetch(
-        "http://127.0.0.1:8000/loan/1"
+    const [url, setUrl] = useState("http://127.0.0.1:8000/categoria");
+
+    const { data: libro, loading, error } = useFetch(
+        url, true
     );
-    
+
+    const { data: catalogo } = useFetch(
+        "http://127.0.0.1:8000/category"
+    );
+
+    const handleCategoryChange = (event) => {
+        const selectedId = event.target.value;
+        setUrl(`http://127.0.0.1:8000/categoria/${selectedId}`);
+    };
+
+
+
+
     const filtrarLibros = () => {
         return libros.filter(libro =>
             libro.titulo.toLowerCase().includes(titulo.toLowerCase()) &&
@@ -101,48 +115,78 @@ function Prestamos() {
                             </select>
                         </div>
 
+                        <div className="mb-6 col-start-1 col-span-4 row-start-3">
+                            <select
+                                onChange={handleCategoryChange}
+
+                                className="w-full p-3 border border-[#d6c8b2] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7A9B7D]"
+                            >
+                                {catalogo?.map((Category) => (
+
+                                    <option value={Category.idCategoria}>{Category.nombreC}</option>
+
+                                ))}
+                            </select>
+                        </div>
+
 
                     </div>
 
                     <div className="overflow-x-auto">
-                        
-                            {loading ? (
-                                <Loading />
-                            ) : (
-                        
-                        <table className="w-full bg-white border border-gray-200 rounded-lg shadow-md">
-                            <thead className="bg-blue-500 text-white">
-                                <tr>
-                                    <th className="py-2 px-4 text-left">Título</th>
-                                    <th className="py-2 px-4 text-left">Autor</th>
-                                    <th className="py-2 px-4 text-left">Categoría</th>
-                                    <th className="py-2 px-4 text-center">Seleccionar</th>
-                                    <th className="py-2 px-4 text-center">Estado</th>
-                                    <th className="py-2 px-4 text-center">Disponibilidad</th>
-                                </tr>
-                            </thead>
-                            {error && <li>Error: {error}</li>}
-                            <tbody>
-                                {data?.map((Loan) => (
-                                    <tr className="border-b">
-                                        <td className="py-2 px-4">{Loan.libro}</td>
-                                        <td className="py-2 px-4">{Loan.autor}</td>
-                                        <td className="py-2 px-4">{Loan.category}</td>
-                                        <td className="py-2 px-4 text-center">
-                                            <button
-                                                onClick={() => seleccionarLibro(Loan.titulo)}
-                                                className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
-                                            >
-                                                Seleccionar
-                                            </button>
-                                        </td>
-                                        <td className="py-2 px-4">{Loan.estado}</td>
-                                        <td className="py-2 px-4">{Loan.disponibilidad}</td>
+
+                        {loading ? (
+                            <Loading />
+                        ) : (
+
+                            <table className="w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                                <thead className="bg-blue-500 text-white">
+                                    <tr>
+                                        <th className="py-2 px-4 text-left">Título</th>
+                                        <th className="py-2 px-4 text-left">Autor</th>
+                                        <th className="py-2 px-4 text-left">Disponibilidad</th>
+                                        <th className="py-2 px-4 text-center">Categoría</th>
+                                        <th className="py-2 px-4 text-center">Seleccionar</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    )}
+                                </thead>
+                                {error && <li>Error: {error}</li>}
+
+                                <tbody>
+                                    {libro?.map((Book) => (
+                                        <tr key={Book.idLibro}>
+                                            <td className="py-2 px-4">{Book.nombrelibro}</td>
+                                            <td className="py-2 px-4">{Book.nombreautor}</td>
+                                            <td className="py-2 px-4">{Book.disponibilidad}</td>
+                                            <td className="py-2 px-4">{Book.categoria}</td>
+                                            <td className="py-2 px-4 text-center">
+                                                {Book.disponibilidad !== "Prestado" ? (
+                                                    <>
+                                                        
+                                                        <button
+                                                            onClick={() => seleccionarLibro(Loan.titulo)}
+                                                            className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                                                        >
+                                                            Seleccionar
+                                                        </button>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        
+                                                        <button
+                                                            className="bg-red-500 text-white px-3 py-1 rounded cursor-not-allowed"
+                                                            disabled
+                                                        >
+                                                            Bloqueado
+                                                        </button>
+                                                    </>
+                                                )}
+                                            </td>
+
+                                        </tr>
+                                    ))}
+
+                                </tbody>
+                            </table>
+                        )}
                     </div>
 
                 </div>
