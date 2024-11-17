@@ -15,10 +15,9 @@ class Reader extends Model
         'APaterno',
         'AMaterno',
         'DNI',
-        'codigoLector',
-        'semestre',
         'idTipo',
-        'idArea'
+        'idArea',
+        'password'
     ];
 
     public function loans()
@@ -33,7 +32,7 @@ class Reader extends Model
 
     public function Sanctions()
     {
-        return $this->hasMany(Saction::class);
+        return $this->hasMany(Sanction::class);
     }
 
     public function Type()
