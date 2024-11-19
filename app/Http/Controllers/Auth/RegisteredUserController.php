@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Reader;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -31,20 +31,30 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'nombre' => 'required|string|max:255',
+            'correoelectronico' =>'required|string|max:255',
+            'APaterno' => 'required|string|max:255',
+            'AMaterno' => 'nullable|string|max:255',
+            'DNI' => 'required|string|max:8|unique:lector,DNI', // Validación única en la tabla lector
+            'idTipo' => 'required|integer|exists:types,idTipo', // Validar que exista en la tabla types
+            'idArea' => 'required|integer|exists:areas,idArea', // Validar que exista en la tabla areas
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+        $reader = Reader::create([
+            'nombre' => $request->nombre,
+            'APaterno' => $request->APaterno,
+            'AMaterno' => $request->AMaterno,
+            'DNI' => $request->DNI,
+            'idTipo' => $request->idTipo,
+            'idArea' => $request->idArea,
         ]);
 
-        event(new Registered($user));
+        // Registrar el evento de registro
+        event(new Registered($reader));
 
-        Auth::login($user);
+        // Opcional: autenticar al lector si lo necesitas
+        Auth::login($reader);
 
         return redirect(route('mainmenu', absolute: false));
     }

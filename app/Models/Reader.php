@@ -12,13 +12,13 @@ class Reader extends Model
     protected $primaryKey = 'idLector';
     protected $fillable = [
         'nombre',
+        'correoelectronico',
         'APaterno',
         'AMaterno',
         'DNI',
-        'codigoLector',
-        'semestre',
         'idTipo',
-        'idArea'
+        'idArea',
+        'password'
     ];
 
     public function loans()
