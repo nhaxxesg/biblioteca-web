@@ -11,6 +11,7 @@ class Solicitud extends Model
 
     protected $table = 'solicitud';
     protected $primarykey = 'idSolicitud';
+    public $incrementing = true;
     protected $fillable = [
         'idLector',
         'idBibliotecario',

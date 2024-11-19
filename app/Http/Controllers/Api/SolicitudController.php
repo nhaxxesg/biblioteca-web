@@ -22,7 +22,9 @@ class SolicitudController extends Controller
     public function store(Request $request)
     {
         $solicitud = Solicitud::create($request->all());
-        return response()->json($solicitud, 201);
+        return back()->with([
+            'message' => 'Solicitud guardada'
+        ]);
     }
 
     /**
