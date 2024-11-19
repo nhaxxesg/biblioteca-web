@@ -32,6 +32,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
+            'correoelectronico' =>'required|string|max:255',
             'APaterno' => 'required|string|max:255',
             'AMaterno' => 'nullable|string|max:255',
             'DNI' => 'required|string|max:8|unique:lector,DNI', // Validación única en la tabla lector

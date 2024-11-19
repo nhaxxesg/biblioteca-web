@@ -12,6 +12,7 @@ class Reader extends Model
     protected $primaryKey = 'idLector';
     protected $fillable = [
         'nombre',
+        'correoelectronico',
         'APaterno',
         'AMaterno',
         'DNI',
