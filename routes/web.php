@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AreaController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\DevolucionController;
 use App\Http\Controllers\Api\LoanController;
 use App\Http\Controllers\Api\SanctionController;
 use App\Http\Controllers\Api\SolicitudController;
@@ -20,13 +21,13 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-Route::get('/Devolucion', function () {
+Route::get('/menudevolucion', function () {
     return Inertia::render('MenuDevoluciones/index');
-})->name('devolucion');
+})->name('menudevolucion');
 
-Route::get('/sanciones', function () {
+Route::get('/menusanciones', function () {
     return Inertia::render('Sanciones/index');
-})->name('sanciones');
+})->name('menusanciones');
 
 Route::get('/mainmenu', function () {
     return Inertia::render('MainMenu/index');
@@ -36,9 +37,9 @@ Route::get('/menuprestamos', function () {
     return Inertia::render('MenuPrestamos/index');
 })->name('menuprestamos');
 
-Route::get('/catalogo', function () {
+Route::get('/menucatalogo', function () {
     return Inertia::render('CatalagoMenu/CatalogPage');
-})->name('catalogo');
+})->name('menucatalogo');
 
 
 Route::middleware('auth')->group(function () {
@@ -51,7 +52,9 @@ Route::apiResource('libroautor', LibroAutorController::class);
 Route::apiResource('loan', LoanController::class);
 Route::get('/categoria/{idCategoria?}', [LibroAutorController::class, 'index']);
 Route::apiResource('category', CategoryController::class);
-Route::apiResource('sanction', SanctionController::class);
+// Route::apiResource('sanction', SanctionController::class);
 Route::apiResource('solicitud', SolicitudController::class);
+Route::get('/devolucion/{idUser}', [DevolucionController::class, 'show']);
+Route::get('/sanction/{idUser}', [SanctionController::class, 'show']);
 
 require __DIR__.'/auth.php';
