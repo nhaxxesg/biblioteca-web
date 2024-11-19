@@ -1,91 +1,112 @@
-import React, { useState } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { useState, useEffect } from "react";
+import { useFetch } from "./useFetch";
 
 function Sanciones() {
-    const [monto, setMonto] = useState("");
-    const [descripcion, setDescripcion] = useState("");
-    const [sancionSeleccionada, setSancionSeleccionada] = useState(null);
 
-    const sanciones = [
-        { idEjemplar: "123", titulo: "El principito", nombreLector: "Juan Pérez", dni: "12345678", fecha: "2023-11-05", monto: "20.00", descripcion: "Libro devuelto en mal estado." },
-        { idEjemplar: "124", titulo: "Cien años de soledad", nombreLector: "Maria García", dni: "87654321", fecha: "2023-10-15", monto: "15.00", descripcion: "Retraso en la devolución." },
-        // Agrega más datos aquí si lo deseas
-    ];
+  const { data } = useFetch(
+    "http://127.0.0.1:8000/sanction/2"
+  );
 
-    const seleccionarSancion = (sancion) => {
-        setMonto(sancion.monto);
-        setDescripcion(sancion.descripcion);
-        setSancionSeleccionada(sancion.idEjemplar); // Guarda el ID de la sanción seleccionada
-    };
+  const [openModal, setOpenModal] = useState(null);
+  const sancionSeleccionada = data?.find(sancion => sancion.idSanciones === openModal);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-    return (
-        <AuthenticatedLayout
-            header={
-                <div>
-                    <h1 className="text-3xl font-bold text-gray-800">Sanciones</h1>
-                </div>
-            }
-            children={
-                <div className="p-6">
-                    <div className="overflow-x-auto mb-4">
-                        <table className="w-full bg-white border border-gray-200 rounded-lg shadow-md">
-                            <thead className="bg-blue-500 text-white">
-                                <tr>
-                                    <th className="py-2 px-4 text-left">Título</th>
-                                    <th className="py-2 px-4 text-left">Nombre Lector</th>
-                                    <th className="py-2 px-4 text-left">DNI</th>
-                                    <th className="py-2 px-4 text-left">Fecha</th>
-                                    <th className="py-2 px-4 text-center">Acción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {sanciones.map((sancion, index) => (
-                                    <tr
-                                        key={index}
-                                        className={`border-b ${
-                                            sancionSeleccionada === sancion.idEjemplar ? "bg-gray-200" : ""
-                                        }`}
-                                    >
-                                        <td className="py-2 px-4">{sancion.titulo}</td>
-                                        <td className="py-2 px-4">{sancion.nombreLector}</td>
-                                        <td className="py-2 px-4">{sancion.dni}</td>
-                                        <td className="py-2 px-4">{sancion.fecha}</td>
-                                        <td className="py-2 px-4 text-center">
-                                            <button
-                                                onClick={() => seleccionarSancion(sancion)}
-                                                className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                                            >
-                                                Seleccionar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+  useEffect(() => {
+    if (openModal) {
+      setIsAnimating(true);
+    } else {
+      setIsAnimating(false);
+    }
+  }, [openModal]);
 
-                    <div className="mb-4">
-                        <label className="block font-semibold text-gray-700 mb-1">Detalles de la sanción:</label>
-                        <textarea
-                            value={descripcion}
-                            readOnly
-                            className="w-full p-2 border border-gray-300 rounded-md h-24"
-                        />
-                    </div>
+  const handleClose = () => {
+    setIsAnimating(false);
+    setTimeout(() => {
+      setOpenModal(null);
+    }, 300);
+  };
 
-                    <div className="mb-4">
-                        <label className="block font-semibold text-gray-700 mb-1">Monto:</label>
-                        <input
-                            type="text"
-                            value={monto}
-                            readOnly
-                            className="w-full p-2 border border-gray-300 rounded-md"
-                        />
-                    </div>
-                </div>
-            }
-        />
-    );
+  return (
+    <AuthenticatedLayout
+      header={
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800">Sanciones</h1>
+        </div>
+      }
+
+      children={
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl p-4">
+            {data?.map((sancion) => (
+              <div className="p-6 border border-[#acacaf] rounded-lg shadow-lg bg-gradient-to-r from-green-100 to-zinc-100">
+                <h2 className="text-lg font-semibold text-[#777777]">
+                  Devolucion de: {sancion.titulo}
+                </h2>
+                <p className="text-[#777777]">Fecha: {sancion.fDevoluciones}</p>
+                <br />
+                {sancion.estado !== "Pendiente" ? (
+                  <>
+                    <span
+                      className="inline-block bg-[#b6ffb4] text-black-600 text-sm px-3 py-1 rounded-full"
+                    >
+                      {sancion.estado}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span
+                      className="inline-block bg-[#ffcaca] text-black-600 text-sm px-3 py-1 rounded-full"
+                    >
+                      {sancion.estado}
+                    </span>
+                  </>
+                )}
+                <br />
+                <button
+                  onClick={() => setOpenModal(sancion.idSanciones)}
+                  className="mt-4 bg-[#dabef8] text-black text-sm px-4 py-2 rounded hover:bg-[#c596f8]"
+                >
+                  Ver detalles
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {openModal && sancionSeleccionada && (
+            <div
+              className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-300 ${isAnimating ? "opacity-100" : "opacity-0"
+                }`}
+              onClick={handleClose}
+            >
+              <div
+                className={`bg-white p-6 rounded-lg shadow-lg max-w-md w-full transform transition-all duration-300 ${isAnimating
+                  ? "scale-100 translate-y-0 opacity-100"
+                  : "scale-95 opacity-0 translate-y-10"
+                  }`}
+                onClick={(e) => e.stopPropagation()} // Evita cerrar al hacer clic dentro del modal
+              >
+                <h2 className="text-lg font-semibold text-black-600">
+                  {sancionSeleccionada.titulo}
+                </h2>
+                <p className="text-[#505050] mt-2">Detalles: {sancionSeleccionada.detalles}</p>
+                <p className="text-[#777777] mt-2">
+                  Multa pendiente:{" "}
+                  <span className="text-[#777777] font-semibold">S/.{sancionSeleccionada.monto}</span>
+                </p>
+                <button
+                  onClick={handleClose}
+                  className="mt-4 bg-[#dabef8] text-black text-sm px-4 py-2 rounded hover:bg-[#c596f8]"
+                >
+                  Cerrar
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      }
+    ></AuthenticatedLayout>
+  )
 }
 
 export default Sanciones;

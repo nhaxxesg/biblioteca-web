@@ -25,9 +25,9 @@ function Catalog() {
     return (
         <AuthenticatedLayout
             header={
-                <h1 className="text-xl font-semibold leading-tight text-gray-800">
-                    Sistema de Catálogos
-                </h1>
+                <div>
+                    <h1 className="text-3xl font-bold text-gray-800">Catalogo</h1>
+                </div>
             }
             children={
                 <div className="flex">

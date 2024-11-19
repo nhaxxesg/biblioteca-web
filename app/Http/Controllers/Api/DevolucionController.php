@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Sanction;
-use App\Models\SanctionV;
+use App\Models\Devolucion;
 use Illuminate\Http\Request;
 
-class SanctionController extends Controller
+class DevolucionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $all = Devolucion::all();
+        return response()->json($all);
     }
 
     /**
@@ -22,16 +22,15 @@ class SanctionController extends Controller
      */
     public function store(Request $request)
     {
-        $loan = Sanction::create($request->all());
-        return response()->json($loan, 201);
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id = null)
     {
-        $all = SanctionV::where('idLector', $id)->paginate(10)->items();
+        $all = Devolucion::where('idLector', $id)->paginate(10)->items();
         return response()->json($all);
     }
 
