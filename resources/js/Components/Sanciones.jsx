@@ -1,11 +1,12 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { useState, useEffect } from "react";
 import { useFetch } from "./useFetch";
+import Loading from "./Loading";
 
 function Sanciones() {
 
-  const { data } = useFetch(
-    "http://127.0.0.1:8000/sanction/2"
+  const { data, loading } = useFetch(
+    "http://127.0.0.1:8000/sanction/1"
   );
 
   const [openModal, setOpenModal] = useState(null);
@@ -37,41 +38,46 @@ function Sanciones() {
 
       children={
         <div className="min-h-screen flex items-center justify-center">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl p-4">
-            {data?.map((sancion) => (
-              <div className="p-6 border border-[#acacaf] rounded-lg shadow-lg bg-gradient-to-r from-green-100 to-zinc-100">
-                <h2 className="text-lg font-semibold text-[#777777]">
-                  Devolucion de: {sancion.titulo}
-                </h2>
-                <p className="text-[#777777]">Fecha: {sancion.fDevoluciones}</p>
-                <br />
-                {sancion.estado !== "Pendiente" ? (
-                  <>
-                    <span
-                      className="inline-block bg-[#b6ffb4] text-black-600 text-sm px-3 py-1 rounded-full"
-                    >
-                      {sancion.estado}
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <span
-                      className="inline-block bg-[#ffcaca] text-black-600 text-sm px-3 py-1 rounded-full"
-                    >
-                      {sancion.estado}
-                    </span>
-                  </>
-                )}
-                <br />
-                <button
-                  onClick={() => setOpenModal(sancion.idSanciones)}
-                  className="mt-4 bg-[#dabef8] text-black text-sm px-4 py-2 rounded hover:bg-[#c596f8]"
-                >
-                  Ver detalles
-                </button>
-              </div>
-            ))}
-          </div>
+
+          {loading ? (
+            <Loading />
+          ) : (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl p-4">
+              {data?.map((sancion) => (
+                <div className="p-6 border border-[#acacaf] rounded-lg shadow-lg bg-gradient-to-r from-green-100 to-zinc-100">
+                  <h2 className="text-lg font-semibold text-[#777777]">
+                    Devolucion de: {sancion.titulo}
+                  </h2>
+                  <p className="text-[#777777]">Fecha: {sancion.fDevoluciones}</p>
+                  <br />
+                  {sancion.estado !== "Pendiente" ? (
+                    <>
+                      <span
+                        className="inline-block bg-[#b6ffb4] text-black-600 text-sm px-3 py-1 rounded-full"
+                      >
+                        {sancion.estado}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span
+                        className="inline-block bg-[#ffcaca] text-black-600 text-sm px-3 py-1 rounded-full"
+                      >
+                        {sancion.estado}
+                      </span>
+                    </>
+                  )}
+                  <br />
+                  <button
+                    onClick={() => setOpenModal(sancion.idSanciones)}
+                    className="mt-4 bg-[#dabef8] text-black text-sm px-4 py-2 rounded hover:bg-[#c596f8]"
+                  >
+                    Ver detalles
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
 
           {openModal && sancionSeleccionada && (
             <div
