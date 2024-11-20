@@ -2,44 +2,54 @@ import React, { useState } from "react";
 import { useFetch } from "./useFetch";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Loading from "./Loading";
+import { useForm } from "@inertiajs/react";
 
 function Prestamos() {
-    const [titulo, setTitulo] = useState("");
-    const [autor, setAutor] = useState("");
-    const [categoria, setCategoria] = useState("");
-    const [libros] = useState([
-        { titulo: "El principito", autor: "Antoine de Saint-Exupéry", categoria: "Ficción" },
-        { titulo: "El principitote", autor: "royer", categoria: "Ciencia" },
-    ]);
 
     const [url, setUrl] = useState("http://127.0.0.1:8000/categoria");
+    const { data: libro, loading, error } = useFetch(url, true);
+    const { data: catalogo } = useFetch("http://127.0.0.1:8000/category");
 
-    const { data: libro, loading, error } = useFetch(
-        url, true
-    );
 
-    const { data: catalogo } = useFetch(
-        "http://127.0.0.1:8000/category"
-    );
+    const [writelabel, setwritelabel] = useState(null);
+    const libroseleccionado = libro?.find(book => book.idlibro === writelabel);
+
+
+    const [searchTitle, setSearchTitle] = useState("");
+    const [searchAuthor, setSearchAuthor] = useState("");
+
+    const filteredBooks = libro
+        ? libro.filter((book) => {
+            const matchesTitle = book.nombrelibro?.toLowerCase().includes(searchTitle.toLowerCase());
+            const matchesAuthor = book.nombreautor?.toLowerCase().includes(searchAuthor.toLowerCase());
+            return matchesTitle && matchesAuthor;
+        })
+        : [];
+
+    const handleBookSelection = (idLibro) => {
+        setData("idBibliotecario", idLibro);
+        setwritelabel(idLibro);
+    };
 
     const handleCategoryChange = (event) => {
         const selectedId = event.target.value;
         setUrl(`http://127.0.0.1:8000/categoria/${selectedId}`);
     };
 
+    const { data, setData, post, errors, reset } = useForm({
+        idLector: "1",
+        idBibliotecario: "",
+        fSolicitud: "",
+    });
 
-
-
-    const filtrarLibros = () => {
-        return libros.filter(libro =>
-            libro.titulo.toLowerCase().includes(titulo.toLowerCase()) &&
-            libro.autor.toLowerCase().includes(autor.toLowerCase()) &&
-            (categoria === "" || libro.categoria === categoria)
-        );
-    };
-
-    const seleccionarLibro = (titulo) => {
-        alert(`Libro seleccionado: ${titulo}`);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        post(route("solicitud.store"), {
+            onSuccess: () => {
+                reset();
+                setwritelabel(null);
+            }
+        });
     };
 
     return (
@@ -52,70 +62,59 @@ function Prestamos() {
             children={
                 <div className="p-6">
 
-                    <div className="grid grid-cols-4 grid-rows-2 gap-5">
-                        <div className="col-start-1 col-end-3 row-start-1">
+                    <div className="grid grid-cols-3 gap-5">
+                        <form onSubmit={handleSubmit} className="col-start-1 col-span-2">
+                            <div>
+                                <label className="block font-semibold text-gray-700 mb-1">Fecha Solicitud:</label>
+                                <input type="date"
+                                    value={data.fSolicitud}
+                                    onChange={(e) => setData("fSolicitud", e.target.value)}
+                                    className="w-full p-2 border border-gray-300 rounded-md"
+                                ></input>
+                            </div>
+                            <div>
+                                <button type="submit" className="mt-4 bg-[#dabef8] text-black text-sm px-4 py-2 rounded hover:bg-[#c596f8] w-64" >Enviar Solicitud</button>
+                            </div>
+                        </form>
 
-                            <label className="block font-semibold text-gray-700 mb-1">Seleccionar Semestre:</label>
-                            <select name="" id="" className="w-full  border border-gray-300 rounded-md">
-                                <option value="">I</option>
-                                <option value="">II</option>
-                                <option value="">III</option>
-                                <option value="">IV</option>
-                                <option value="">V</option>
-                                <option value="">VI</option>
-
-
-                            </select>
-
+                        <div>
+                            {libroseleccionado && (
+                                <div className="mt-4 p-4 border rounded bg-gray-100">
+                                    <h3 className="text-lg font-bold">Libro seleccionado:</h3>
+                                    <p>Nombre: {libroseleccionado.nombrelibro}</p>
+                                    <p>Autor: {libroseleccionado.nombreautor}</p>
+                                    <p>Categoría: {libroseleccionado.categoria}</p>
+                                    <p>Disponibilidad: {libroseleccionado.disponibilidad}</p>
+                                </div>
+                            )}
                         </div>
 
-                        <div className="row-start-2 col-start-1 ">
-                            <label className="block font-semibold text-gray-700 mb-1">Nombre y Apellidos:</label>
-                            <p>prueba</p>
-                        </div>
-                        <div className="row-start-2 col-start-2">
-                            <label className="block font-semibold text-gray-700 mb-1">Tipo Usuario:</label>
-                            <p>prueba</p>
-                        </div>
-                        <div className="col-start-3 row-start-1">
+                        <div className="col-start-1 row-start-2">
 
                             <div className="mb-4">
                                 <label className="block font-semibold text-gray-700 mb-1">Buscar por Título:</label>
                                 <input
                                     type="text"
-                                    value={titulo}
-                                    onChange={(e) => setTitulo(e.target.value)}
                                     className="w-full p-2 border border-gray-300 rounded-md"
+                                    value={searchTitle}
+                                    onChange={(e) => setSearchTitle(e.target.value)}
                                 />
                             </div>
                         </div>
-                        <div className="col-start-3  row-start-2">
+                        <div className="col-start-2 row-start-2">
                             <div className="mb-4">
                                 <label className="block font-semibold text-gray-700 mb-1">Buscar por Autor:</label>
                                 <input
                                     type="text"
-                                    value={autor}
-                                    onChange={(e) => setAutor(e.target.value)}
                                     className="w-full p-2 border border-gray-300 rounded-md"
+                                    value={searchAuthor}
+                                    onChange={(e) => setSearchAuthor(e.target.value)}
                                 />
                             </div>
                         </div>
 
-                        <div className="mb-6 col-start-4 row-start-1">
-                            <label className="block font-semibold text-gray-700 mb-1">Filtrar por Categoría:</label>
-                            <select
-                                value={categoria}
-                                onChange={(e) => setCategoria(e.target.value)}
-                                className="w-full p-2 border border-gray-300 rounded-md"
-                            >
-                                <option value="">Todas</option>
-                                <option value="Ficción">Ficción</option>
-                                <option value="No ficción">No ficción</option>
-                                <option value="Ciencia">Ciencia</option>
-                            </select>
-                        </div>
-
                         <div className="mb-6 col-start-1 col-span-4 row-start-3">
+                            <label className="block font-semibold text-gray-700 mb-1">Filtrar por Categoría:</label>
                             <select
                                 onChange={handleCategoryChange}
 
@@ -139,7 +138,7 @@ function Prestamos() {
                         ) : (
 
                             <table className="w-full bg-white border border-gray-200 rounded-lg shadow-md">
-                                <thead className="bg-blue-500 text-white">
+                                <thead className="bg-[#5ca4eb] text-white">
                                     <tr>
                                         <th className="py-2 px-4 text-left">Título</th>
                                         <th className="py-2 px-4 text-left">Autor</th>
@@ -151,39 +150,42 @@ function Prestamos() {
                                 {error && <li>Error: {error}</li>}
 
                                 <tbody>
-                                    {libro?.map((Book) => (
-                                        <tr key={Book.idLibro}>
-                                            <td className="py-2 px-4">{Book.nombrelibro}</td>
-                                            <td className="py-2 px-4">{Book.nombreautor}</td>
-                                            <td className="py-2 px-4">{Book.disponibilidad}</td>
-                                            <td className="py-2 px-4">{Book.categoria}</td>
-                                            <td className="py-2 px-4 text-center">
-                                                {Book.disponibilidad !== "Prestado" ? (
-                                                    <>
-                                                        
+                                    {filteredBooks?.length > 0 ? (
+                                        filteredBooks.map((book) => (
+                                            <tr key={book.idlibro}>
+                                                <td className="py-2 px-4">{book.nombrelibro}</td>
+                                                <td className="py-2 px-4">{book.nombreautor}</td>
+                                                <td className="py-2 px-4">{book.disponibilidad}</td>
+                                                <td className="py-2 px-4">{book.categoria}</td>
+                                                <td className="py-2 px-4 text-center">
+                                                    {book.disponibilidad !== "Prestado" ? (
                                                         <button
-                                                            onClick={() => seleccionarLibro(Loan.titulo)}
-                                                            className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                                                            onClick={() => handleBookSelection(book.idlibro)}
+                                                            className={`px-3 py-1 rounded ${writelabel === book.idlibro
+                                                                    ? "bg-[#f1c71c] text-white"
+                                                                    : "bg-green-500 text-white hover:bg-green-600"
+                                                                }`}
                                                         >
-                                                            Seleccionar
+                                                            {writelabel === book.idlibro ? "Seleccionado" : "Seleccionar"}
                                                         </button>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        
+                                                    ) : (
                                                         <button
                                                             className="bg-red-500 text-white px-3 py-1 rounded cursor-not-allowed"
                                                             disabled
                                                         >
                                                             Bloqueado
                                                         </button>
-                                                    </>
-                                                )}
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="5" className="text-center py-4">
+                                                No se encontraron resultados.
                                             </td>
-
                                         </tr>
-                                    ))}
-
+                                    )}
                                 </tbody>
                             </table>
                         )}
