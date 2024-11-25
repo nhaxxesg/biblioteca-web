@@ -14,7 +14,7 @@ class Solicitud extends Model
     // public $incrementing = true;
     protected $fillable = [
         'idLector',
-        'idBibliotecario',
+        'idlibro',
         'fSolicitud'
     ];
 

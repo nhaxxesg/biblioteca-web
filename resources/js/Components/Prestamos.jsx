@@ -27,7 +27,7 @@ function Prestamos() {
         : [];
 
     const handleBookSelection = (idLibro) => {
-        setData("idBibliotecario", idLibro);
+        setData("idlibro", idLibro);
         setwritelabel(idLibro);
     };
 
@@ -38,7 +38,7 @@ function Prestamos() {
 
     const { data, setData, post, errors, reset } = useForm({
         idLector: "1",
-        idBibliotecario: "",
+        idlibro: "",
         fSolicitud: "",
     });
 
