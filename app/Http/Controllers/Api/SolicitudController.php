@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Book;
 use App\Models\Solicitud;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,11 @@ class SolicitudController extends Controller
      */
     public function index()
     {
-        //
+        
+        $solicitudes = Solicitud::with(['reader', 'reader.Type', 'reader.Area','libro'])->get();
+
+        // Retornar las solicitudes en formato JSON
+        return response()->json($solicitudes);
     }
 
     /**

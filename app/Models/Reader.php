@@ -38,6 +38,6 @@ class Reader extends Model
 
     public function Type()
     {
-        return $this->hasOne(Type::class, 'idTipo');
+        return $this->belongsTo(Type::class, 'idTipo', 'idTipo');
     }
 }

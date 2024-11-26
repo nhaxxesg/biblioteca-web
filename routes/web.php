@@ -13,6 +13,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -57,5 +59,6 @@ Route::apiResource('solicitud', SolicitudController::class);
 Route::get('/devolucion/{idUser}', [DevolucionController::class, 'show']);
 Route::get('/devolucion/search/{name}', [DevolucionController::class, 'searchByName']);
 Route::get('/sanction/{idUser}', [SanctionController::class, 'show']);
+Route::apiResource('/devoluciones', DevolucionController::class);
 
 require __DIR__.'/auth.php';

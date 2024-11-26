@@ -17,5 +17,13 @@ class Solicitud extends Model
         'idlibro',
         'fSolicitud'
     ];
-
+    // Relación con el modelo Lector
+    public function reader()
+    {
+        return $this->hasMany(Reader::class, 'idLector', 'idLector');
+    }
+    public function libro()
+    {
+        return $this->belongsTo(Book::class, 'idLibro');
+    }
 }
