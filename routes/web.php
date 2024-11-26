@@ -55,6 +55,7 @@ Route::apiResource('category', CategoryController::class);
 // Route::apiResource('sanction', SanctionController::class);
 Route::apiResource('solicitud', SolicitudController::class);
 Route::get('/devolucion/{idUser}', [DevolucionController::class, 'show']);
+Route::get('/devolucion/search/{name}', [DevolucionController::class, 'searchByName']);
 Route::get('/sanction/{idUser}', [SanctionController::class, 'show']);
 
 require __DIR__.'/auth.php';

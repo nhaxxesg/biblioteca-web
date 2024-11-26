@@ -34,6 +34,12 @@ class DevolucionController extends Controller
         return response()->json($all);
     }
 
+    public function searchByName(string $name)
+    {
+        $results = Devolucion::where('name', 'LIKE', '%' . $name . '%')->paginate(10)->items();
+        return response()->json($results);
+    }
+    
     /**
      * Update the specified resource in storage.
      */
