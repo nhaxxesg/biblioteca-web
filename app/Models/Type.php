@@ -12,7 +12,7 @@ class Type extends Model
     protected $table = 'tipo';
     protected $primaryKey = 'idTipo';
     protected $fillable = [
-        'nombreT'
+        'nombre'
     ];
 
     public function readers()

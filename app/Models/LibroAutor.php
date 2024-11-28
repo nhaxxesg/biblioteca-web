@@ -10,23 +10,14 @@ class LibroAutor extends Model
 {
     use HasFactory;
     protected $table = 'libro_autor';
-    protected $primarykey = 'idLibroAutor';
     protected $fillable = [
-        'idAutor',
-        'idCategoria',
         'idLibro',
-        'titulo',
-        'anno'
+        'idAutor',
     ];
 
-    public function phone(): HasOne
+    public function autor(): HasOne
     {
         return $this->hasOne(Autor::class);
-    }
-
-    public function category(): HasOne
-    {
-        return $this->hasOne(Category::class);
     }
 
     public function book(): HasOne

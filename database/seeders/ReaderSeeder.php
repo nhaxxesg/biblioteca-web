@@ -6,7 +6,7 @@ use App\Models\Reader;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class UsuarioSeeder extends Seeder
+class ReaderSeeder extends Seeder
 {
     /**
      * Run the database seeds.

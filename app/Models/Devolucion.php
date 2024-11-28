@@ -9,6 +9,16 @@ class Devolucion extends Model
 {
     use HasFactory;
 
-    protected $table = 'sancionesdev';
-    
+    protected $table = 'devolucion';
+    protected $primaryKey = 'idDevolucion';
+    protected $fillable = [ 
+        'idPrestamo',
+        'fDevolucion',
+        'fDevolucionEsperada'
+    ];
+
+    public function loans()
+    {
+        return $this->hasOne(Loan::class);
+    }
 }

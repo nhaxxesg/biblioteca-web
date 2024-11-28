@@ -20,8 +20,8 @@ class SolicitudFactory extends Factory
     {
         return [
             'fsolicitud' => $this->faker->date(),
-            'idLector' => $this->faker->unique()->numberBetween(100,500),
-            'idLibro' =>  $this->faker->unique()->numberBetween(100,500),
+            'idLector' => $this->faker->numberBetween(100,500),
+            'idLibro' =>  $this->faker->numberBetween(100,500),
             'estado' => $this->faker->sentence(),
             'created_at' => $this->faker->dateTimeThisYear(),
             'updated_at' => $this->faker->dateTimeThisMonth()

@@ -11,7 +11,12 @@ class Category extends Model
     protected $table = 'categoria';
     protected $primaryKey = 'idCategoria';
     protected $fillable = [ 
-        'nombreC',
+        'nombre',
         'abreviatura'
     ];
+
+    public function book()
+    {
+        return $this->hasOne(Book::class);
+    }
 }

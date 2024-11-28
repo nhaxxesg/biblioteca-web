@@ -12,8 +12,8 @@ class Book extends Model
     protected $primaryKey = 'idLibro';
     protected $fillable = [
         'codigo',
-        'estado',
-        'disponibilidad'
+        'disponibilidad',
+        'titulo'
     ];
 
     public function autors()
@@ -23,7 +23,7 @@ class Book extends Model
 
     public function loans()
     {
-        return $this->hasMany(Loan::class);
+        return $this->hasOney(Loan::class);
     }
 }
 
