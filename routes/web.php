@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\DevolucionController;
 use App\Http\Controllers\Api\LoanController;
 use App\Http\Controllers\Api\SanctionController;
 use App\Http\Controllers\Api\SolicitudController;
+use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\LibroAutorController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Solicitud;
@@ -52,7 +53,7 @@ Route::middleware('auth')->group(function () {
 
 Route::apiResource('libroautor', LibroAutorController::class);
 Route::apiResource('loan', LoanController::class);
-Route::get('/categoria/{idCategoria?}', [LibroAutorController::class, 'index']);
+Route::get('/categoria/{idCategoria?}', [CatalogController::class, 'show']);
 Route::apiResource('category', CategoryController::class);
 // Route::apiResource('sanction', SanctionController::class);
 Route::apiResource('solicitud', SolicitudController::class);

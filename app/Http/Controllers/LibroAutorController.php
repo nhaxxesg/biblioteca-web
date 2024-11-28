@@ -14,10 +14,11 @@ class LibroAutorController extends Controller
     protected $categoryController;
     protected $autorController;
 
-    public function __construct(BookController $bookController,
-                                CategoryController $categoryController,
-                                AutorController $autorController)
-    {
+    public function __construct(
+        BookController $bookController,
+        CategoryController $categoryController,
+        AutorController $autorController
+    ) {
         $this->bookController = $bookController;
         $this->categoryController = $categoryController;
         $this->autorController = $autorController;
@@ -28,25 +29,24 @@ class LibroAutorController extends Controller
     public function index(string $idCategoria = null)
     {
         // CATALOGO
-        $idCategoria = ($idCategoria == null)? $idCategoria = 1 : $idCategoria = $idCategoria;
+        $idCategoria = ($idCategoria == null) ? $idCategoria = 1 : $idCategoria = $idCategoria;
         $all = LibroAutor::where('idCategoria', $idCategoria)->paginate(20);
         foreach ($all as $libroautor) {
             $response_json = $this->bookController->show($libroautor->idLibro);
             $response_autor_json = $this->autorController->show($libroautor->idAutor);
-            $response_category_json = $this->categoryController->show($idCategoria);
             $book = $response_json->getData();
             $autor = $response_autor_json->getData();
+            $response_category_json = $this->categoryController->show($book->idCategoria);
             $category = $response_category_json->getData();
             $data = [
                 'idlibro' => $book->idLibro,
-                'nombrelibro' => $libroautor->titulo,
+                'nombrelibro' => $book->titulo,
                 'disponibilidad' => $book->disponibilidad,
-                'nombreautor' => $autor->nombreAU,
-                'categoria' => $category->nombreC
-            ];  
+                'nombreautor' => $autor->nombre,
+                'categoria' => $category->nombre
+            ];
 
             $current_data[] = $data;
-            
         }
 
         return response()->json($current_data);
@@ -65,18 +65,17 @@ class LibroAutorController extends Controller
      */
     public function show(string $id_libro)
     {
-
         $libroautor = LibroAutor::where('idLibro', $id_libro)->first();
-        # necesito un autor controller para traer el autor por el id 
         $response_autor_json = $this->autorController->show($libroautor->idAutor);
-        $response_category_json = $this->categoryController->show($libroautor->idCategoria);
-        $category = $response_category_json->getData();
+        $response_book_json = $this->bookController->show($libroautor->idLibro);
+        $book = $response_book_json->getData();
         $autor = $response_autor_json->getData();
+        $response_category_json = $this->categoryController->show($book->idCategoria);
+        $category = $response_category_json->getData();
         $data = [
-            'libro' => $libroautor->titulo,
-            'category' => $category->nombreC,
-            'autor' => $autor->nombreAU,
-
+            'titulo' => $book->titulo,
+            'autor' => $autor->nombre,
+            'categoria' => $category->nombre
         ];
         return response()->json($data);
     }

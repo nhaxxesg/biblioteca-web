@@ -45,17 +45,15 @@ class LoanController extends Controller
             $response_libro_autor_json = $this->libroAutorController->show($prestamo->idLibro);
             $json_content = $response_libro_autor_json->getData();
             $data = json_decode(json_encode($json_content), true);
-            $response_book_json = $this->bookController->show($prestamo->idLibro);
-            $book = $response_book_json->getData();
-            $data =[
-                'libro' => $data['libro'],
-                'category' => $data['category'], 
+            $data=[
+                'titulo' => $data['titulo'],
                 'autor' => $data['autor'],
-                'estado' => $prestamo->estado,
-                'disponibilidad' => $book->disponibilidad,
+                'categoria' => $data['categoria'],
+                'fPrestamo' => $prestamo->fPrestamo,
             ];
             array_push($response_data, $data);
-        };
+            
+        } 
         return response()->json($response_data);
     }
 
