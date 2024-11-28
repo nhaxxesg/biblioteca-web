@@ -11,22 +11,15 @@ class Loan extends Model
     protected $table = 'prestamo';
     protected $primaryKey = 'idPrestamo';
     protected $fillable = [
-        'idBibliotecario',
         'idLector',
         'idLibro',
         'fPrestamo',
-        'fDevoluciones',
         'estado'
     ];
 
     public function book()
     {
         return $this->hasOne(Book::class, 'idLibro');
-    }
-
-    public function Librarian()
-    {
-        return $this->hasOne(Librarian::class, 'idBibliotecario');
     }
 
     public function reader()

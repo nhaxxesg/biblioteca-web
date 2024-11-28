@@ -11,14 +11,16 @@ class Reader extends Model
     protected $table = 'lector';
     protected $primaryKey = 'idLector';
     protected $fillable = [
-        'nombre',
-        'APaterno',
-        'AMaterno',
-        'DNI',
-        'codigoLector',
-        'semestre',
+        'idArea',
         'idTipo',
-        'idArea'
+        'nombre',
+        'correo',
+        'clave',
+        'aPaterno',
+        'aMaterno',
+        'dni',
+        'codigoLector',
+        'semestre'
     ];
 
     public function loans()
@@ -31,13 +33,9 @@ class Reader extends Model
         return $this->hasOne(Area::class, 'idArea');
     }
 
-    public function Sanctions()
-    {
-        return $this->hasMany(Sanction::class);
-    }
-
     public function Type()
     {
         return $this->belongsTo(Type::class, 'idTipo', 'idTipo');
     }
 }
+    

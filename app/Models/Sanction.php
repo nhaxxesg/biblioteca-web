@@ -8,17 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Sanction extends Model
 {
     use HasFactory;
-    protected $table = 'sanciones';
-    protected $primaryKey = 'idSanciones';
+    protected $table = 'sancion';
+    protected $primaryKey = 'idSancion';
     protected $fillable = [
-        'idLector',
+        'idDevolucion',
         'monto',
         'detalles',
         'estado'
     ];
 
-    public function reader()
+    public function devolucion()
     {
-        return $this->hasOne(Reader::class, 'idLector');
+        return $this->hasOne(devolucion::class, 'idDevolucion');
     }
 }
