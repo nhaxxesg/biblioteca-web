@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Sanction;
+use App\Models\SanctionReader;
 use App\Models\SanctionV;
 use Illuminate\Http\Request;
 
@@ -31,7 +32,7 @@ class SanctionController extends Controller
      */
     public function show(string $id)
     {
-        $all = SanctionV::where('idLector', $id)->paginate(10)->items();
+        $all =  SanctionReader::where('idLector', $id)->paginate(10)->items();
         return response()->json($all);
     }
 

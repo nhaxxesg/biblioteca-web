@@ -2,9 +2,9 @@ import NavLink from '@/Components/NavLink';
 
 function Asidebar() {
     return (
-        <aside id="sidebar" class="bg-[#232d30] text-white w-64 min-h-screen p-6 hidden md:block">
-            <h2 class="text-2xl font-bold mb-6">Biblioteca</h2>
-            <nav class="space-y-4">
+        <aside id="sidebar" className="bg-[#232d30] text-white w-64 min-h-screen p-6 hidden md:block">
+            <h2 className="text-2xl font-bold mb-6">Biblioteca</h2>
+            <nav className="space-y-4">
 
                 <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <NavLink
