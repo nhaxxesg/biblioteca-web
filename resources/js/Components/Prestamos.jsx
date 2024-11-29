@@ -3,6 +3,9 @@ import { useFetch } from "./useFetch";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Loading from "./Loading";
 import { useForm } from "@inertiajs/react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Inertia } from '@inertiajs/inertia'
 
 function Prestamos() {
 
@@ -12,7 +15,7 @@ function Prestamos() {
 
 
     const [writelabel, setwritelabel] = useState(null);
-    const libroseleccionado = libro?.find(book => book.idlibro === writelabel);
+    const libroseleccionado = libro?.find(book => book.idLibro === writelabel);
 
 
     const [searchTitle, setSearchTitle] = useState("");
@@ -20,14 +23,14 @@ function Prestamos() {
 
     const filteredBooks = libro
         ? libro.filter((book) => {
-            const matchesTitle = book.nombrelibro?.toLowerCase().includes(searchTitle.toLowerCase());
-            const matchesAuthor = book.nombreautor?.toLowerCase().includes(searchAuthor.toLowerCase());
+            const matchesTitle = book.titulo?.toLowerCase().includes(searchTitle.toLowerCase());
+            const matchesAuthor = book.autor?.toLowerCase().includes(searchAuthor.toLowerCase());
             return matchesTitle && matchesAuthor;
         })
         : [];
 
     const handleBookSelection = (idLibro) => {
-        setData("idlibro", idLibro);
+        setData("idLibro", idLibro);
         setwritelabel(idLibro);
     };
 
@@ -38,8 +41,9 @@ function Prestamos() {
 
     const { data, setData, post, errors, reset } = useForm({
         idLector: "1",
-        idlibro: "",
+        idLibro: "",
         fSolicitud: "",
+        estado: "Pendiente",
     });
 
     const handleSubmit = (e) => {
@@ -48,9 +52,34 @@ function Prestamos() {
             onSuccess: () => {
                 reset();
                 setwritelabel(null);
-            }
+                toast.success("Préstamo registrado exitosamente.", {
+                    position: "top-right",
+                    autoClose: 1500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+
+                setTimeout(() => {
+                    Inertia.visit('/mainmenu');
+                }, 1500);
+            },
+            onError: () => {
+                toast.error("Hubo un error al registrar el préstamo.", {
+                    position: "top-right",
+                    autoClose: 1500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            },
         });
     };
+
 
     return (
         <AuthenticatedLayout
@@ -81,8 +110,8 @@ function Prestamos() {
                             {libroseleccionado && (
                                 <div className="mt-4 p-4 border rounded bg-gray-100">
                                     <h3 className="text-lg font-bold">Libro seleccionado:</h3>
-                                    <p>Nombre: {libroseleccionado.nombrelibro}</p>
-                                    <p>Autor: {libroseleccionado.nombreautor}</p>
+                                    <p>Nombre: {libroseleccionado.titulo}</p>
+                                    <p>Autor: {libroseleccionado.autor}</p>
                                     <p>Categoría: {libroseleccionado.categoria}</p>
                                     <p>Disponibilidad: {libroseleccionado.disponibilidad}</p>
                                 </div>
@@ -122,7 +151,7 @@ function Prestamos() {
                             >
                                 {catalogo?.map((Category) => (
 
-                                    <option value={Category.idCategoria}>{Category.nombreC}</option>
+                                    <option value={Category.idCategoria}>{Category.nombre}</option>
 
                                 ))}
                             </select>
@@ -152,21 +181,27 @@ function Prestamos() {
                                 <tbody>
                                     {filteredBooks?.length > 0 ? (
                                         filteredBooks.map((book) => (
-                                            <tr key={book.idlibro}>
-                                                <td className="py-2 px-4">{book.nombrelibro}</td>
-                                                <td className="py-2 px-4">{book.nombreautor}</td>
-                                                <td className="py-2 px-4">{book.disponibilidad}</td>
-                                                <td className="py-2 px-4">{book.categoria}</td>
+                                            <tr key={book.idLibro}>
+                                                <td className="py-2 px-4 uppercase">{book.titulo}</td>
+                                                <td className="py-2 px-4 uppercase">{book.autor}</td>
+                                                <td className="py-2 px-4">
+                                                    {book.disponibilidad !== 0 ? (
+                                                        "Disponible"
+                                                    ) : (
+                                                        "No disponible"
+                                                    )}
+                                                </td>
+                                                <td className="py-2 px-4 uppercase">{book.categoria}</td>
                                                 <td className="py-2 px-4 text-center">
-                                                    {book.disponibilidad !== "Prestado" ? (
+                                                    {book.disponibilidad !== 0 ? (
                                                         <button
-                                                            onClick={() => handleBookSelection(book.idlibro)}
-                                                            className={`px-3 py-1 rounded ${writelabel === book.idlibro
-                                                                    ? "bg-[#f1c71c] text-white"
-                                                                    : "bg-green-500 text-white hover:bg-green-600"
+                                                            onClick={() => handleBookSelection(book.idLibro)}
+                                                            className={`px-3 py-1 rounded ${writelabel === book.idLibro
+                                                                ? "bg-[#f1c71c] text-white"
+                                                                : "bg-green-500 text-white hover:bg-green-600"
                                                                 }`}
                                                         >
-                                                            {writelabel === book.idlibro ? "Seleccionado" : "Seleccionar"}
+                                                            {writelabel === book.idLibro ? "Seleccionado" : "Seleccionar"}
                                                         </button>
                                                     ) : (
                                                         <button
@@ -190,7 +225,7 @@ function Prestamos() {
                             </table>
                         )}
                     </div>
-
+                    <ToastContainer />
                 </div>
             }
         >

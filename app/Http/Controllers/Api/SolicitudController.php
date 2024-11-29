@@ -26,11 +26,22 @@ class SolicitudController extends Controller
      */
     public function store(Request $request)
     {
-        $solicitud = Solicitud::create($request->all());
-        return back()->with([
-            'message' => 'Solicitud guardada'
+        $validatedData = $request->validate([
+            'idLector' => 'required|integer',
+            'idLibro' => 'required|integer',
+            'fSolicitud' => 'required|date',
+            'estado' => 'required|string|max:255',
         ]);
+    
+        try {
+            $solicitud = Solicitud::create($validatedData);
+            Book::where('idLibro', $request->idLibro)->update(['disponibilidad' => false]); 
+            return back()->with('message', 'Solicitud guardada');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'No se pudo guardar la solicitud: ' . $e->getMessage()]);
+        }
     }
+    
 
     /**
      * Display the specified resource.

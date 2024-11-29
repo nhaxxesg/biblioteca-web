@@ -15,9 +15,7 @@ class Solicitud extends Model
         'idLector',
         'idLibro',
         'fSolicitud',
-        'estado',
-        'updated_at',
-        'created_at'
+        'estado'
     ];
     // Relación con el modelo Lector
     public function reader()

@@ -44,7 +44,7 @@ function Catalog() {
                             >
                                 {categoria?.map((Category) => (
 
-                                    <option value={Category.idCategoria}>{Category.nombreC}</option>
+                                    <option value={Category.idCategoria}>{Category.nombre}</option>
 
                                 ))}
                             </select>
@@ -73,9 +73,15 @@ function Catalog() {
                                     <tbody>
                                         {libro?.map((Book) => (
                                             <tr key={Book.idLibro}>
-                                                <td className="py-2 px-4">{Book.nombrelibro}</td>
-                                                <td className="py-2 px-4">{Book.nombreautor}</td>
-                                                <td className="py-2 px-4">{Book.disponibilidad}</td>
+                                                <td className="py-2 px-4 uppercase">{Book.titulo}</td>
+                                                <td className="py-2 px-4 uppercase">{Book.autor}</td>
+                                                <td className="py-2 px-4">
+                                                    {Book.disponibilidad !== 0 ? (
+                                                        "Disponible"
+                                                    ) : (
+                                                        "No disponible"
+                                                    )}
+                                                </td>
                                                 <td className="py-2 px-4">{Book.categoria}</td>
                                             </tr>
                                         ))}

@@ -10,7 +10,7 @@ function Sanciones() {
   );
 
   const [openModal, setOpenModal] = useState(null);
-  const sancionSeleccionada = data?.find(sancion => sancion.idSanciones === openModal);
+  const sancionSeleccionada = data?.find(sancion => sancion.idSancion === openModal);
   const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
@@ -48,28 +48,34 @@ function Sanciones() {
                   <h2 className="text-lg font-semibold text-[#777777]">
                     Devolucion de: {sancion.titulo}
                   </h2>
-                  <p className="text-[#777777]">Fecha: {sancion.fDevoluciones}</p>
+
                   <br />
-                  {sancion.estado !== "Pendiente" ? (
+                  {sancion.estado !== 0 ? (
                     <>
+                      <p className="text-[#777777]">Fecha del Pago : {sancion.fPago}</p>
+                      <br/>
                       <span
                         className="inline-block bg-[#b6ffb4] text-black-600 text-sm px-3 py-1 rounded-full"
                       >
-                        {sancion.estado}
+                        Pagado
+
                       </span>
                     </>
                   ) : (
                     <>
+                      <p className="text-[#777777]">Fecha del Pago: N/A</p>
+                      <br/>
                       <span
                         className="inline-block bg-[#ffcaca] text-black-600 text-sm px-3 py-1 rounded-full"
                       >
-                        {sancion.estado}
+                        No Pagado
+
                       </span>
                     </>
                   )}
                   <br />
                   <button
-                    onClick={() => setOpenModal(sancion.idSanciones)}
+                    onClick={() => setOpenModal(sancion.idSancion)}
                     className="mt-4 bg-[#dabef8] text-black text-sm px-4 py-2 rounded hover:bg-[#c596f8]"
                   >
                     Ver detalles
@@ -92,12 +98,15 @@ function Sanciones() {
                   }`}
                 onClick={(e) => e.stopPropagation()} // Evita cerrar al hacer clic dentro del modal
               >
-                <h2 className="text-lg font-semibold text-black-600">
+                <h2 className="text-lg font-semibold text-black-600 uppercase">
                   {sancionSeleccionada.titulo}
                 </h2>
                 <p className="text-[#505050] mt-2">Detalles: {sancionSeleccionada.detalles}</p>
+                <p className="text-[#505050] mt-2">Fecha del Prestamo: {sancionSeleccionada.fPrestamo}</p>
+                <p className="text-[#505050] mt-2">Fecha Estimada de la Devolucion: {sancionSeleccionada.fDevolucionEsperada}</p>
+                <p className="text-[#505050] mt-2">Fecha Real de la Devolucion: {sancionSeleccionada.fDevolucion}</p>
                 <p className="text-[#777777] mt-2">
-                  Multa pendiente:{" "}
+                  Monto De la multa:{" "}
                   <span className="text-[#777777] font-semibold">S/.{sancionSeleccionada.monto}</span>
                 </p>
                 <button
