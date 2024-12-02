@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Devolucion;
+use App\Models\DevolucionReader;
 use Illuminate\Http\Request;
 
 class DevolucionController extends Controller
@@ -30,7 +31,7 @@ class DevolucionController extends Controller
      */
     public function show(string $id = null)
     {
-        $all = Devolucion::where('idLector', $id)->paginate(10)->items();
+        $all = DevolucionReader::where('idLector', $id)->paginate(10)->items();
         return response()->json($all);
     }
 

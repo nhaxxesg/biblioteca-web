@@ -27,22 +27,32 @@ function Devoluciones() {
                                 <tr>
                                     <th className="py-2 px-4 text-left">Libro</th>
                                     <th className="py-2 px-4 text-left">Fecha Préstamo</th>
-                                    {/* <th className="py-2 px-4 text-left">Fecha Devolución Estimada</th> */}
+                                    <th className="py-2 px-4 text-left">Fecha Devolución Estimada</th>
                                     <th className="py-2 px-4 text-left">Fecha Devolución Real</th>
-                                    {/* <th className="py-2 px-4 text-left">Estado</th> 
-                                <th className="py-2 px-4 text-left">Días de Retraso</th> */}
+                                    <th className="py-2 px-4 text-left">Días de Retraso</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {data?.map((devolucion) => (
-                                    <tr key={devolucion.idPrestamo}>
-                                        <td className="py-2 px-4">{devolucion.titulo}</td>
-                                        <td className="py-2 px-4">{devolucion.fPrestamo}</td>
-                                        <td className="py-2 px-4">{devolucion.fDevoluciones}</td>
-                                    </tr>
+                                {data?.map((devolucion) => {
+                                    const fechaDevolucion = new Date(devolucion.fDevolucion);
+                                    const fechaEsperada = new Date(devolucion.fDevolucionEsperada);
 
-                                ))}
+                                    // Calcular la diferencia en días
+                                    const diasDeRetraso = Math.max(
+                                        0,
+                                        Math.ceil((fechaDevolucion - fechaEsperada) / (1000 * 60 * 60 * 24))
+                                    );
 
+                                    return (
+                                        <tr key={devolucion.idDevolucion}>
+                                            <td className="py-2 px-4">{devolucion.titulo}</td>
+                                            <td className="py-2 px-4">{devolucion.fPrestamo}</td>
+                                            <td className="py-2 px-4">{devolucion.fDevolucionEsperada}</td>
+                                            <td className="py-2 px-4">{devolucion.fDevolucion}</td>
+                                            <td className="py-2 px-4">Dias Atrasados - {diasDeRetraso}</td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </table>
                     )}
