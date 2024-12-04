@@ -16,7 +16,10 @@ function Prestamos() {
 
     const [writelabel, setwritelabel] = useState(null);
     const libroseleccionado = libro?.find(book => book.idLibro === writelabel);
+    const today = new Date();
 
+    const formattedDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+  
 
     const [searchTitle, setSearchTitle] = useState("");
     const [searchAuthor, setSearchAuthor] = useState("");
@@ -42,7 +45,7 @@ function Prestamos() {
     const { data, setData, post, errors, reset } = useForm({
         idLector: "1",
         idLibro: "",
-        fSolicitud: "",
+        fSolicitud: formattedDate,
         estado: "Pendiente",
     });
 
@@ -93,16 +96,17 @@ function Prestamos() {
 
                     <div className="grid grid-cols-3 gap-5">
                         <form onSubmit={handleSubmit} className="col-start-1 col-span-2">
-                            <div>
+                            {/* <div>
                                 <label className="block font-semibold text-gray-700 mb-1">Fecha Solicitud:</label>
                                 <input type="date"
                                     value={data.fSolicitud}
                                     onChange={(e) => setData("fSolicitud", e.target.value)}
                                     className="w-full p-2 border border-gray-300 rounded-md"
                                 ></input>
-                            </div>
+                            </div> */}
                             <div>
                                 <button type="submit" className="mt-4 bg-[#dabef8] text-black text-sm px-4 py-2 rounded hover:bg-[#c596f8] w-64" >Enviar Solicitud</button>
+                                {console.log(data)}
                             </div>
                         </form>
 
