@@ -15,7 +15,7 @@ class SolicitudController extends Controller
     public function index()
     {
         
-        $solicitudes = Solicitud::with(['reader', 'reader.Type', 'reader.Area','libro'])->get();
+        $solicitudes = Solicitud::all();
 
         // Retornar las solicitudes en formato JSON
         return response()->json($solicitudes);
@@ -35,7 +35,7 @@ class SolicitudController extends Controller
     
         try {
             $solicitud = Solicitud::create($validatedData);
-            Book::where('idLibro', $request->idLibro)->update(['disponibilidad' => false]); 
+            Book::where('idLibro', $request->idLibro)->update(['disponibilidad' => '0']); 
             return back()->with('message', 'Solicitud guardada');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'No se pudo guardar la solicitud: ' . $e->getMessage()]);

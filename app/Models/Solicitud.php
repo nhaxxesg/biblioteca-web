@@ -18,12 +18,12 @@ class Solicitud extends Model
         'estado'
     ];
     // Relación con el modelo Lector
-    public function reader()
-    {
-        return $this->hasMany(Reader::class, 'idLector', 'idLector');
-    }
-    public function libro()
-    {
-        return $this->belongsTo(Book::class, 'idLibro');
-    }
+    // public function reader()
+    // {
+    //     return $this->hasMany(Reader::class, 'idLector', 'idLector');
+    // }
+    // public function libro()
+    // {
+    //     return $this->belongsTo(Book::class, 'idLibro');
+    // }
 }

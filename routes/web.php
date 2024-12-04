@@ -44,6 +44,11 @@ Route::get('/menucatalogo', function () {
     return Inertia::render('CatalagoMenu/CatalogPage');
 })->name('menucatalogo');
 
+Route::get('/estadistica', function () {
+    return Inertia::render('MenuEstadisticas/index');
+})->name('estadistica');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
