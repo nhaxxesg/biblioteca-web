@@ -27,9 +27,19 @@ class CatalogController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $categoriaId = $request->query('categoria_id'); // Filtrar por categoría, si se pasa
+        $librosQuery = book::query();
+
+        if ($categoriaId) {
+            $librosQuery->where('idCategoria', $categoriaId);
+        }
+
+        // Devuelve 10 elementos por página
+        $libros = $librosQuery->paginate(10);
+
+        return response()->json($libros);
     }
 
     /**

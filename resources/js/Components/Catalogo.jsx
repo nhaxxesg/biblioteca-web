@@ -5,22 +5,41 @@ import Loading from "./Loading";
 
 function Catalog() {
 
-    const [url, setUrl] = useState("http://127.0.0.1:8000/categoria");
 
-    const { data: libro, loading: loadinglibro, error: errorlibro } = useFetch(
-        url, true
-    );
+    const [currentPage, setCurrentPage] = useState(1);
+    const [url, setUrl] = useState(`http://127.0.0.1:8000/categoria/1?page=${currentPage}`);
+    const { data: libro, loading: loadinglibro, error: errorlibro } = useFetch(url, true);
+    const TotalLibros = libro ? libro.length : 0;
+    const [PaginaFinal, setPaginaFinal] = useState(false);
+    const [idCatalogo, setidCatalogo] = useState(1);
 
     const { data: categoria } = useFetch(
         "http://127.0.0.1:8000/category"
     );
 
-
-
     const handleCategoryChange = (event) => {
         const selectedId = event.target.value;
-        setUrl(`http://127.0.0.1:8000/categoria/${selectedId}`);
+        setCurrentPage(1);
+        setUrl(`http://127.0.0.1:8000/categoria/${selectedId}?page=1`);
+        setPaginaFinal(false);
+        setidCatalogo(selectedId);
+
     };
+
+    const handlePageChange = (direction) => {
+        const newPage = currentPage + direction;
+        if (newPage > 0) {
+            if (TotalLibros === 20) {
+                setCurrentPage(newPage);
+                setUrl(`http://127.0.0.1:8000/categoria/${idCatalogo}?page=${newPage}`);
+                setPaginaFinal(false); 
+            }else{
+                setPaginaFinal(true);
+
+            }
+        }
+    };
+
 
     return (
         <AuthenticatedLayout
@@ -44,7 +63,7 @@ function Catalog() {
                             >
                                 {categoria?.map((Category) => (
 
-                                    <option value={Category.idCategoria}>{Category.nombre}</option>
+                                    <option value={Category.idCategoria} key={Category.idCategoria}>{Category.nombre}</option>
 
                                 ))}
                             </select>
@@ -88,6 +107,24 @@ function Catalog() {
                                     </tbody>
                                 </table>
                             )}
+                        </div>
+
+                        <div className="flex justify-between mt-4">
+                            <button
+                                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                onClick={() => handlePageChange(-1)}
+                                disabled={currentPage === 1}
+                            >
+                                Anterior
+                            </button>
+                            <span className="justify-center">Página {currentPage}</span>
+                            <button
+                                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                onClick={() => handlePageChange(1)}
+                                disabled={PaginaFinal === true}
+                            >
+                                Siguiente
+                            </button>
                         </div>
 
                     </div>
