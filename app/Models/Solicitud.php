@@ -10,13 +10,23 @@ class Solicitud extends Model
     use HasFactory;
 
     protected $table = 'solicitud';
-    protected $primarykey = 'idSolicitud';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
     protected $fillable = [
-        'idLector',
-        'idLibro',
-        'fSolicitud',
-        'estado'
+        'lector_id',
+        'libro_id',
+        'status'
     ];
+
+    public function reader()
+    {
+        return $this->belongsTo(Reader::class, 'lector_id');
+    }
+
+    public function libro()
+    {
+        return $this->belongsTo(Book::class, 'libro_id');
+    }
     // Relación con el modelo Lector
     // public function reader()
     // {

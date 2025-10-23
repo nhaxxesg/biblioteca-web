@@ -9,14 +9,15 @@ class Category extends Model
 {
     use HasFactory;
     protected $table = 'categoria';
-    protected $primaryKey = 'idCategoria';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
     protected $fillable = [ 
-        'nombre',
+        'name',
         'abreviatura'
     ];
 
-    public function book()
+    public function books()
     {
-        return $this->hasMany(Book::class);
+        return $this->hasMany(Book::class, 'category_id');
     }
 }

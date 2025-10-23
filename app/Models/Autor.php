@@ -9,13 +9,15 @@ class Autor extends Model
 {
     use HasFactory;
     protected $table = 'autor';
-    protected $primaryKey = 'idAutor';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
     protected $fillable = [
-        'nombre',
+        'name',
+        'nationality'
     ];
 
     public function books()
     {
-        return $this->belongsToMany(Book::class);
+        return $this->belongsToMany(Book::class, 'libro_autors', 'autor_id', 'libro_id');
     }
 }

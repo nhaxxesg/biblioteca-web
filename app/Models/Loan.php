@@ -9,21 +9,23 @@ class Loan extends Model
 {
     use HasFactory;
     protected $table = 'prestamo';
-    protected $primaryKey = 'idPrestamo';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
     protected $fillable = [
-        'idLector',
-        'idLibro',
-        'fPrestamo',
-        'estado'
+        'libro_id',
+        'lector_id',
+        'loan_date',
+        'return_date',
+        'status'
     ];
 
     public function book()
     {
-        return $this->hasOne(Book::class, 'idLibro');
+        return $this->belongsTo(Book::class, 'libro_id');
     }
 
     public function reader()
     {
-        return $this->hasOne(Reader::class, 'idLector');
+        return $this->belongsTo(Reader::class, 'lector_id');
     }
 }

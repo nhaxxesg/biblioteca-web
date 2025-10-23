@@ -9,23 +9,27 @@ class Reader extends Model
 {
     use HasFactory;
     protected $table = 'lector';
-    protected $primaryKey = 'idLector';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
     protected $fillable = [
         'idArea',
         'idTipo',
         'nombre',
-        'correo',
-        'clave',
-        'aPaterno',
-        'aMaterno',
-        'dni',
-        'codigoLector',
+        'APaterno',
+        'AMaterno',
+        'DNI',
+        'codigoLec',
         'semestre'
     ];
 
     public function loans()
     {
         return $this->hasMany(Loan::class);
+    }
+
+    public function sanctions()
+    {
+        return $this->hasMany(Sanction::class, 'lector_id');
     }
 
     public function Area()

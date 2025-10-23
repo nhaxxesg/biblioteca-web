@@ -9,20 +9,21 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class LibroAutor extends Model
 {
     use HasFactory;
-    protected $table = 'libro_autor';
+    protected $table = 'libro_autors';
+    public $timestamps = true;
     protected $fillable = [
-        'idLibro',
-        'idAutor',
+        'libro_id',
+        'autor_id',
     ];
 
-    public function autor(): HasOne
+    public function autor()
     {
-        return $this->hasOne(Autor::class);
+        return $this->belongsTo(Autor::class, 'autor_id');
     }
 
-    public function book(): HasOne
+    public function book()
     {
-        return $this->hasOne(Book::class);
+        return $this->belongsTo(Book::class, 'libro_id');
     }
 
 

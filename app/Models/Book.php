@@ -9,26 +9,33 @@ class Book extends Model
 {
     use HasFactory;
     protected $table = 'libro';
-    protected $primaryKey = 'idLibro';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
     protected $fillable = [
-        'idCategoria',
-        'codigo',
-        'disponibilidad',
-        'titulo'
+        'title',
+        'isbn',
+        'publication_year',
+        'stock',
+        'category_id'
     ];
 
-    public function autors()
+    public function autores()
     {
-        return $this->belongsToMany(Autor::class);
+        return $this->belongsToMany(Autor::class, 'libro_autors', 'libro_id', 'autor_id');
     }
 
     public function loans()
     {
-        return $this->hasOne(Loan::class);
+        return $this->hasMany(Loan::class, 'libro_id');
     }
 
     public function category(){
-        return $this->hasOne(category::class);
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    public function isAvailable()
+    {
+        return $this->stock > 0;
     }
 }
 

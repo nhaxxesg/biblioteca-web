@@ -9,16 +9,17 @@ class Sanction extends Model
 {
     use HasFactory;
     protected $table = 'sancion';
-    protected $primaryKey = 'idSancion';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
     protected $fillable = [
-        'idDevolucion',
-        'monto',
-        'detalles',
-        'estado'
+        'lector_id',
+        'reason',
+        'start_date',
+        'end_date'
     ];
 
-    public function devolucion()
+    public function reader()
     {
-        return $this->hasOne(devolucion::class, 'idDevolucion');
+        return $this->belongsTo(Reader::class, 'lector_id');
     }
 }

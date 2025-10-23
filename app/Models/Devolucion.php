@@ -10,15 +10,22 @@ class Devolucion extends Model
     use HasFactory;
 
     protected $table = 'devolucion';
-    protected $primaryKey = 'idDevolucion';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
     protected $fillable = [ 
-        'idPrestamo',
-        'fDevolucion',
-        'fDevolucionEsperada'
+        'prestamo_id',
+        'return_date',
+        'condition'
     ];
 
-    public function loans()
+    public function prestamo()
     {
-        return $this->hasOne(Loan::class);
+        return $this->belongsTo(Loan::class, 'prestamo_id');
+    }
+
+    // Alias used by some tests
+    public function loan()
+    {
+        return $this->prestamo();
     }
 }
